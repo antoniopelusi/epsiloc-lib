@@ -1,25 +1,22 @@
-.SILENT: all setup create_metadata privatize
+.SILENT: all setup privatize stats metadata
 
 all:
-	echo "|> No target selected. Abort."
+	echo "|> No target selected. Use: setup, privatize, stats, metadata"
 
 ACTIVATE = . .venv/bin/activate
+DATASET = test_dataset/iris.csv
 
 setup:
 	echo "=========| setup started... |========="
-	echo "|> creating virtual environment..."
 	python3 -m venv .venv
-	echo "|> virtual environment created"
-	echo "|> installing required libraries..."
 	$(ACTIVATE) && python3 -m pip install -r requirements.txt
-	echo "|> required libraries installed"
-	echo "=========| setup completed |========="
-
-create_metadata:
-	$(ACTIVATE) && python3 -m cli.main --metadata test_dataset/iris.csv
+	echo "=========| setup complete |========="
 
 privatize:
-	$(ACTIVATE) && python3 -m cli.main --privatize test_dataset/iris.csv
+	$(ACTIVATE) && python3 epsiloc.py $(DATASET) --privatize
 
 stats:
-	$(ACTIVATE) && python3 -m cli.main --stats test_dataset/iris.csv
+	$(ACTIVATE) && python3 epsiloc.py $(DATASET) --stats
+
+metadata:
+	$(ACTIVATE) && python3 epsiloc.py $(DATASET) --metadata
